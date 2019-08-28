@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
+const routes = require('./routes');
 
-app.get('/', (req, res) => {
-    return res.json({ ok: true })
-})
+app.use(express.json());
+app.use(routes);
 
-module.exports = app 
+module.exports = app; 
