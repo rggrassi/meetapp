@@ -1,4 +1,4 @@
-modules.exports = {
+module.exports = {
     dialect: 'postgres',
     host: 'localhost',
     username: 'postgres',

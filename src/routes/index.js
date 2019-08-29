@@ -1,6 +1,9 @@
+const { User } = require('../database');
 const router = require('express').Router();
-const users = require('./users');
+const UserController = require('../controllers/UserController');
+const SessionController = require('../controllers/SessionController')
 
-router.use('/users', users);
+router.post('/users', UserController.store.bind(null, User));
+router.post('/session', SessionController.create.bind(null, User));
 
 module.exports = router;
