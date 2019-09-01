@@ -9,7 +9,8 @@ const Meetup = sequelize.import('../models/Meetup');
 /**
  * Define the relationship between the models
  */
-const { models } = sequelize;
+const models = {User, File, Meetup};
+
 Object.keys(models).forEach(model => {
     if ('associate' in models[model]) {
         models[model].associate(models)
