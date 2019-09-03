@@ -6,7 +6,7 @@ const index = async ({ Meetup, User }, req, res) => {
   const meetups = await Meetup.findAll({
     where: { user_id: req.user.id },
     order: ['date'],
-    attributes: ['title', 'description', 'location', 'date'],
+    attributes: ['id', 'title', 'description', 'location', 'date'],
     limit: 10,
     offset: (page - 1) * 10, 
     include: [{
@@ -61,15 +61,15 @@ const update = async (Meetup, req, res) => {
   }
 
   if (isBefore(meetup.date, new Date())) {
-    return res.status(401).json({ error: 'Unable to change data from a past meetup.' })
+    return res.status(401).json({ error: 'Unable to change a meetup that already happened.' });
   }
 
   if (meetup.user_id !== req.user.id) {
     return res.status(401).json({ error: "You don't have permission to update this meetup." });
   }
 
-  const { id, title, description, date } = await meetup.update(req.body);
-  return res.json({ id, title, description, date });
+  const { id, title, description, date, location } = await meetup.update(req.body);
+  return res.json({ id, title, description, date, location });
 }
 
 const remove = async (Meetup, req, res) => {
@@ -80,7 +80,7 @@ const remove = async (Meetup, req, res) => {
   }
 
   if (isBefore(meetup.date, new Date())) {
-    return res.status(401).json({ error: 'Unable to change data from a past meetup.' })
+    return res.status(401).json({ error: 'Unable to cancel a meetup that already happened.' })
   }
 
   if (meetup.user_id !== req.user.id) {
