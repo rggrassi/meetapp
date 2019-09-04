@@ -1,8 +1,8 @@
-import nodemailer from 'nodemailer';
-import nodemailerhbs from 'nodemailer-express-handlebars';
-import exphbs from 'express-handlebars';
-import { resolve } from 'path'
-import config from '../config/mail';
+const nodemailer = require('nodemailer');
+const nodemailerhbs = require('nodemailer-express-handlebars');
+const exphbs = require('express-handlebars');
+const { resolve } = require('path');
+const config = require('../config/mail');
 
 const { host, port, secure, auth } = config;
 const transporter = nodemailer.createTransport({ 

@@ -1,6 +1,6 @@
-import sendMail from '../lib/Mail';
-import { format, parseISO } from 'date-fns';
-import ptBr from 'date-fns/locale/pt-BR';
+const { sendMail } = require('../lib/Mail');
+const { format, parseISO } = require('date-fns');
+const ptBr = require('date-fns/locale/pt-BR');
 
 const key = 'NewSubscription';
 
@@ -8,7 +8,7 @@ const handle = async ({ data }) => {
     const { meetup, user } = data;
     const formatDate = format(parseISO(meetup.date), "'dia' dd 'de' MMMM', às' H:mm'h'", { locale: ptBr });
     await sendMail({
-        to: `${appointment.provider.name} <${appointment.provider.email}>`,
+        to: `${meetup.user.name} <${meetup.user.email}>`,
         subject: 'Nova inscrição',
         template: 'subscription',
         context: {

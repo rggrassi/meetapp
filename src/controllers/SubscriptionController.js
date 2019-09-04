@@ -1,7 +1,11 @@
-const {  isBefore } = require('date-fns');
+const { isBefore } = require('date-fns');
+const Queue = require('../lib/Queue');
+const NewSubscription = require('../jobs/NewSubscription');
 
 const create = async ({ Meetup, Subscription }, req, res) => {
-    const meetup = await Meetup.findByPk(req.params.meetupId);
+    const meetup = await Meetup.findByPk(req.params.meetupId, {
+        include: [{ model: User, as: user, attributes: ['name', 'email'] }]
+    });
 
     if (!meetup) {
         return res.status(404).json({ error: 'Meetup not found.' })
@@ -44,7 +48,7 @@ const create = async ({ Meetup, Subscription }, req, res) => {
         user_id: req.user.id 
     });
 
-    
+    await Queue.add(NewSubscription.key, { meetup, user: req.user });
 
     return res.json(subscription);
 }

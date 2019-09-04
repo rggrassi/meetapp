@@ -1,6 +1,6 @@
-import Bee from 'bee-queue';
-import redisConfig from '../config/redis';
-import NewSubscription from '../jobs/NewSubscription';
+const Bee = require('bee-queue');
+const redisConfig = require('../config/redis');
+const NewSubscription = require('../jobs/NewSubscription');
 
 const queues = {};
 const jobs = [NewSubscription];
