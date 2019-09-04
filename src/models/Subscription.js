@@ -1,4 +1,4 @@
-module.exports = function(Sequelize, DataTypes) => {
+module.exports = function(Sequelize, DataTypes) {
     const Subscription = Sequelize.define('Subscription', {
         date: DataTypes.DATE
     })
@@ -7,4 +7,6 @@ module.exports = function(Sequelize, DataTypes) => {
         Subscription.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' }),
         Subscription.belongsTo(models.Meetup, { foreignKey: 'meetup_id', as: 'meetup' })
     }
+
+    return Subscription;
 }
