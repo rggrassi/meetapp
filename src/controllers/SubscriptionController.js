@@ -1,6 +1,24 @@
+const { Op } = require('sequelize');
 const { isBefore } = require('date-fns');
 const Queue = require('../lib/Queue');
 const NewSubscription = require('../jobs/NewSubscription');
+
+const index = async ({ Meetup, Subscription }, req, res) => {
+    const subscriptions = await Subscription.findAll({
+        where: { user_id: req.user.id },
+        include: [{
+            model: Meetup,
+            where: { 
+                date: {
+                    [Op.gt]: new Date()
+                }
+            }
+        }],
+        order: [[ Meetup, 'date' ]]
+    })
+    
+    return res.json(subscriptions);
+}
 
 const create = async ({ Meetup, Subscription }, req, res) => {
     const meetup = await Meetup.findByPk(req.params.meetupId, {
@@ -53,4 +71,4 @@ const create = async ({ Meetup, Subscription }, req, res) => {
     return res.json(subscription);
 }
 
-module.exports = { create }
+module.exports = { create, index }

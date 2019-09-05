@@ -2,9 +2,19 @@ const Yup = require('yup');
 const { isBefore, startOfHour, parseISO } = require('date-fns');
 
 const index = async ({ Meetup, User }, req, res) => {
+  const schema = Yup.object().shape({
+    date: Yup.date().required()
+  })
+  if (!(await schema.isValid({ date: req.params.date } ))) {
+    return res.status(400).json({ error: 'Invalid parameter format.' })
+  }
+
   const { page = 1 } = req.query;
   const meetups = await Meetup.findAll({
-    where: { user_id: req.user.id },
+    where: { 
+      user_id: req.user.id, 
+      date: parseISO(req.params.date)  
+    },
     order: ['date'],
     attributes: ['id', 'title', 'description', 'location', 'date'],
     limit: 10,
